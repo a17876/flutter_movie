@@ -8,7 +8,12 @@ import '../widgets/movie_category.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
-  final Future<List<PopularModel>> movies = ApiService.getPopularMovies();
+  final Future<List<PopularModel>> popularMovies =
+      ApiService.getMovies("popular");
+  final Future<List<PopularModel>> nowMovies =
+      ApiService.getMovies("now-playing");
+  final Future<List<PopularModel>> soonMovies =
+      ApiService.getMovies("coming-soon");
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +28,18 @@ class HomeScreen extends StatelessWidget {
                 category: "Popular Movies",
               ),
               MovieCard(
-                movies: movies,
+                movies: popularMovies,
                 height: 180,
                 width: 250,
               ),
               const MovieCategory(
                 category: "Now In Cinemas",
               ),
-              MovieCard(movies: movies, height: 100, width: 100),
+              MovieCard(movies: nowMovies, height: 100, width: 100),
               const MovieCategory(
                 category: "Coming Soon",
               ),
-              MovieCard(movies: movies, height: 100, width: 100),
+              MovieCard(movies: soonMovies, height: 100, width: 100),
             ],
           ),
         ),
