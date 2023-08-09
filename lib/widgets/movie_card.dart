@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie/models/moviecard_model.dart';
 
-import '../models/popular_model.dart';
+import '../screens/detailed_screen.dart';
 
 class MovieCard extends StatelessWidget {
   const MovieCard({
@@ -10,7 +11,7 @@ class MovieCard extends StatelessWidget {
     required this.width,
   });
 
-  final Future<List<PopularModel>> movies;
+  final Future<List<MovieCardModel>> movies;
 
   final double height, width;
 
@@ -30,34 +31,48 @@ class MovieCard extends StatelessWidget {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 var movie = snapshot.data![index];
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => DetailScreen(
+                          id: movie.id,
+                          title: movie.title,
+                        ),
                       ),
-                      clipBehavior: Clip.hardEdge,
-                      height: height,
-                      width: width,
-                      child: Image.network(
-                        movie.thumb,
-                        fit: BoxFit.cover,
+                    );
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        clipBehavior: Clip.hardEdge,
+                        height: height,
+                        width: width,
+                        child: Image.network(
+                          movie.thumb,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      height: 80,
-                      width: width,
-                      child: Text(
-                        movie.title,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 80,
+                        width: width,
+                        child: Text(
+                          movie.title,
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
